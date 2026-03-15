@@ -43,21 +43,30 @@ body {
 
 .nav-buttons button {
     padding: 8px 16px;
-    border-radius: 6px;
     border: none;
     cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    display:flex;
+    justify-content: space-between;
 }
 
 .login {
     background: #eee;
+    text-decoration: none;
+    color: black;
+    padding:3px;
+    border-radius: 3px;
 }
 
 .signup {
-    background: #1f6bff;
-    color: white;
+    background: #eee;
+    color: black;
+    padding:3px;
+    text-decoration: none;
+    border-radius: 3px;
 }
 
-/* HERO */
 
 .hero {
     display: flex;
@@ -122,6 +131,11 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 1, 0.05);
     font-weight: bold;
 }
+.stats :hover{
+    transform:translatey(-5px);
+    transition:0.3s;
+
+}
 
 /* FEATURES */
 
@@ -139,6 +153,10 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
+}
+.feature-card:hover{
+    transform:translatey(-5px);
+    transition:0.3s;
 }
 
 .feature-card {
