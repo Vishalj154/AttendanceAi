@@ -51,14 +51,18 @@ input{
     border:1px solid #ccc;
 }
 
-button{
-    width:100%;
-    padding:12px;
-    background:#2563eb;
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 18px;
+    border-radius:5px;
     color:white;
-    border:none;
-    border-radius:6px;
-    margin-top:10px;
+    text-decoration:none;
+    font-size:14px;
+    
+}
+.admin{
+    background:#0d0ada;
 }
 </style>
 
@@ -83,7 +87,7 @@ button{
 <label>Password</label>
 <input type="password" placeholder="******">
 
-<button>Login</button>
+<a href="admin-dashboard.html" class="btn admin">login</a>
 
 </div>
 

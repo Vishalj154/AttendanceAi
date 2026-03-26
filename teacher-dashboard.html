@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teacher Dashboard</title>
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+display:flex;
+background:#f5f7fb;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:240px;
+background:#fff;
+height:100vh;
+padding:20px;
+border-right:1px solid #eee;
+position:fixed;
+}
+
+.sidebar h2{
+margin-bottom:20px;
+}
+
+.sidebar p{
+color:#777;
+font-size:14px;
+margin-bottom:30px;
+}
+
+.sidebar ul{
+list-style:none;
+}
+
+.sidebar ul li{
+padding:12px;
+margin-bottom:10px;
+cursor:pointer;
+border-radius:8px;
+}
+
+.sidebar ul li:hover{
+background:#f0f4ff;
+}
+
+.active{
+background:#e6edff;
+color:#1f6bff;
+font-weight:bold;
+}
+
+/* MAIN */
+
+.main{
+margin-left:240px;
+width:100%;
+}
+
+/* TOPBAR */
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.topbar h1{
+font-size:22px;
+}
+
+.btn{
+background:#1f6bff;
+color:white;
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* DASHBOARD */
+
+.container{
+padding:30px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.card h3{
+color:#777;
+font-size:14px;
+}
+
+.card p{
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+}
+
+/* CLASS BOX */
+
+.class-box{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+margin-bottom:30px;
+}
+
+.class-card{
+padding:20px;
+border-radius:12px;
+background:#fff;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.green{ color:green; }
+.red{ color:red; }
+
+/* STUDENTS */
+
+.students{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.student-card{
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+display:flex;
+align-items:center;
+justify-content:space-between;
+flex-wrap:wrap;
+}
+
+.student-info{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.student-info img{
+width:50px;
+height:50px;
+border-radius:50%;
+}
+
+.actions button{
+margin:5px;
+padding:6px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.present{
+background:#d4f8e8;
+color:green;
+}
+
+.absent{
+background:#ffd6d6;
+color:red;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+.cards{
+grid-template-columns:repeat(2,1fr);
+}
+.students{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:700px){
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.class-box{
+grid-template-columns:1fr;
+}
+
+.students{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>Smart Attendance</h2>
+<p>Teacher</p>
+
+<ul>
+<li class="active">Overview</li>
+<li>Classes</li>
+<li>Start Attendance</li>
+<li>Reports</li>
+</ul>
+
+<br><br>
+
+<p><b>Dr. Rakesh Sharma</b><br>teacher@mail.com</p>
+<button class="btn">Logout</button>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- TOPBAR -->
+<div class="topbar">
+<h1>Dashboard</h1>
+<button class="btn">Start Attendance Session</button>
+</div>
+
+<div class="container">
+
+<h2>Teacher Dashboard</h2>
+<p>Welcome back, Dr. Rakesh Sharma!</p>
+
+<br>
+
+<!-- CARDS -->
+<div class="cards">
+
+<div class="card">
+<h3>Subject</h3>
+<p>Data Structures</p>
+</div>
+
+<div class="card">
+<h3>Total Students</h3>
+<p>8</p>
+</div>
+
+<div class="card">
+<h3>Attendance</h3>
+<p class="green">37.5%</p>
+</div>
+
+<div class="card">
+<h3>Sessions</h3>
+<p>12</p>
+</div>
+
+</div>
+
+<!-- CLASS STATS -->
+<div class="class-box">
+
+<div class="class-card">
+<h3>Total Students</h3>
+<p>8</p>
+</div>
+
+<div class="class-card">
+<h3>Present Today</h3>
+<p class="green">3</p>
+</div>
+
+<div class="class-card">
+<h3>Absent Today</h3>
+<p class="red">7</p>
+</div>
+
+</div>
+
+<h3>Student List</h3>
+
+<br>
+
+<!-- STUDENTS -->
+<div class="students" id="students"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const students = [
+{name:"Aarav Sharma", id:"CSE001"},
+{name:"Priya Patel", id:"CSE002"},
+{name:"Rajesh Kumar", id:"CSE003"},
+{name:"Neha Singh", id:"CSE004"},
+{name:"Ankit Verma", id:"CSE005"},
+{name:"Deepika Gupta", id:"CSE006"},
+{name:"Harsh Pant", id:"CSE007"},
+{name:"Swati Joshi", id:"CSE008"}
+];
+
+const container = document.getElementById("students");
+
+students.forEach(s => {
+const div = document.createElement("div");
+div.className = "student-card";
+
+div.innerHTML = `
+<div class="student-info">
+<img src="https://i.pravatar.cc/150?img=${Math.floor(Math.random()*70)}">
+<div>
+<b>${s.name}</b><br>
+<small>${s.id}</small>
+</div>
+</div>
+
+<div class="actions">
+<button class="present" onclick="mark(this,'present')">Present</button>
+<button class="absent" onclick="mark(this,'absent')">Absent</button>
+</div>
+`;
+
+container.appendChild(div);
+});
+
+function mark(btn,type){
+const parent = btn.parentElement;
+
+if(type==="present"){
+parent.querySelector(".present").style.background="green";
+parent.querySelector(".present").style.color="white";
+parent.querySelector(".absent").style.background="#ffd6d6";
+parent.querySelector(".absent").style.color="red";
+}else{
+parent.querySelector(".absent").style.background="red";
+parent.querySelector(".absent").style.color="white";
+parent.querySelector(".present").style.background="#d4f8e8";
+parent.querySelector(".present").style.color="green";
+}
+}
+
+</script>
+
+</body>
+</html>
