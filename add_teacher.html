@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .conatiner{
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2{
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back {
+            text-decoration: none;
+            color: rgb(41, 19, 211);
+            font-size: 14px;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="conatiner">
+        <a href="admin-dashboard.html" class="back">← Back to admin dashboard</a>
+        <h2>Add Teacher</h2>
+        
+
+    Name :<input id="name" placeholder="Name">
+    Subject : <input id="subject" placeholder="Subject"><br>
+    Email : <input id="email" placeholder="Email"><br>
+    Phone: <input id="phone" placeholder="Phone"><br>
+    password: <input id="password" placeholder="Password">
+
+
+    <button onclick="saveTeacher()">Save</button>
+    </div>
+
+    <script>
+        function saveTeacher() {
+
+  const teacher = {
+    id: Date.now(),
+    name: document.getElementById("name").value,
+    subject: document.getElementById("subject").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    password: document.getElementById("password").value
+  };
+
+  let data = JSON.parse(localStorage.getItem("teachers")) || [];
+  data.push(teacher);
+
+  localStorage.setItem("teachers", JSON.stringify(data));
+
+  alert("Teacher Added!");
+}
+    </script>
+
+</body>
+
+</html>

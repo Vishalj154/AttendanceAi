@@ -2,13 +2,13 @@
 <html>
 
 <head>
-    <title>Teacher Login</title>
+    <title>Admin Login</title>
 
     <style>
         body {
             margin: 0;
             font-family: Arial;
-            background: #f2f0ff;
+            background: #eef3fb;
         }
 
         .container {
@@ -25,7 +25,7 @@
         .icon {
             width: 70px;
             height: 70px;
-            background: #e0e7ff;
+            background: #dbeafe;
             margin: 20px auto;
             border-radius: 12px;
             display: flex;
@@ -73,29 +73,50 @@
 <body>
 
     <div class="container">
-        
 
-        <a href="index.html" class="back">← Back to Role Selection</a>
+        <a href="login.html" class="back">← Back to Role Selection</a>
 
-        <div class="icon">📘</div>
+        <div class="icon">🛡️</div>
 
-        <h1>Teacher Login</h1>
+        <h1>Admin Login</h1>
         <p>Enter your credentials to continue</p>
 
         <div class="card">
 
             <label>Email Address</label>
-            <input type="email" placeholder="teacher@college.edu">
+            <input type="email" placeholder="admin@college.edu" required>
 
             <label>Password</label>
-            <input type="password" placeholder="******">
-
-            <a href="teacher-dashboard.html" class="btn admin">login</a>
+            <input type="password" placeholder="******" required>
+            <button class="btn admin" onclick="login()">Login</button>
 
         </div>
 
     </div>
+    <script>
+        
+
+            function login() {
+                let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            // check empty
+            if (email === "" || password === "") {
+                alert("Please enter email and password");
+            return;
+            }
+
+            // simple admin check (you can change later)
+            if (email === "admin@college.edu" && password === "1234") {
+                window.location.href = "../admin-dashboard.html";
+            } else {
+                alert("Invalid login credentials");
+            }
+}
+
     
+    </script>
+
 </body>
 
 </html>

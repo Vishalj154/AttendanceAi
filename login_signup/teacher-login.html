@@ -73,9 +73,9 @@
 <body>
 
     <div class="container">
-        
 
-        <a href="index.html" class="back">← Back to Role Selection</a>
+
+        <a href="login.html" class="back">← Back to Role Selection</a>
 
         <div class="icon">📘</div>
 
@@ -85,17 +85,36 @@
         <div class="card">
 
             <label>Email Address</label>
-            <input type="email" placeholder="teacher@college.edu">
+            <input type="email" id="email" placeholder="teacher@gmail.com">
+            <input type="password" id="password" placeholder="Password">
 
-            <label>Password</label>
-            <input type="password" placeholder="******">
-
-            <a href="teacher-dashboard.html" class="btn admin">login</a>
+            <button class="btn admin" onclick="login()">Login</button>
 
         </div>
 
     </div>
-    
+    <script>
+
+function login() {
+  let email = document.getElementById("email").value.trim();
+  let password = document.getElementById("password").value.trim();
+
+  let teachers = JSON.parse(localStorage.getItem("teachers")) || [];
+
+  let user = teachers.find(t => 
+    t.email === email && t.password === password
+  );
+
+  if (user) {
+    localStorage.setItem("loggedTeacher", JSON.stringify(user));
+    window.location.href = "../teacher-dashboard.html";
+  } else {
+    alert("Invalid email or password");
+  }
+}
+
+</script>
+
 </body>
 
 </html>
