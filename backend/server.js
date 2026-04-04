@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '..')));
 
 const teacherRoutes = require("./routes/teachers");
 const studentRoutes = require("./routes/students");  // 👈 ADD THIS

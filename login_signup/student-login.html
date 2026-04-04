@@ -106,7 +106,10 @@ function login() {
   .then(data => {
     if (data.success) {
       localStorage.setItem("student", JSON.stringify(data.student));
-      window.location.href = "../student-dashboard.html";
+
+      // ✅ FIXED PATH
+      window.location.href = "/students/student-dashboard.html";
+
     } else {
       alert("Invalid credentials");
     }
