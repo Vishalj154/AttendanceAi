@@ -225,15 +225,15 @@ grid-template-columns:1fr;
 
 <ul>
 <li class="active">Overview</li>
-<li>Mark Attendance</li>
-<li>Attendance</li>
+<li onclick="window.location.href='student-report.html'">Overall Attendance</li>
+<li onclick="window.location.href='student-attendance.html'">Attendance</li>
 <li>History</li>
 <li>Profile</li>
 </ul>
 
 <div class="profile-box">
-<p><b>Aarav Sharma</b></p>
-<small>student@mail.com</small>
+<p id="normaltext"><b>Aarav Sharma</b></p>
+<small id="normemail">student@mail.com</small>
 <button class="logout">Logout</button>
 </div>
 
@@ -249,7 +249,7 @@ grid-template-columns:1fr;
 
 <div class="container">
 
-<h2>Welcome back, Aarav Sharma!</h2>
+<h2 id="welcomeText"></h2>
 <br>
 
 <!-- CARDS -->
@@ -257,7 +257,7 @@ grid-template-columns:1fr;
 
 <div class="card">
 <h3>Overall Attendance</h3>
-<p class="red">60%</p>
+<p id="overallAttendance">--</p>
 </div>
 
 <div class="card">
@@ -272,7 +272,7 @@ grid-template-columns:1fr;
 
 <div class="card">
 <h3>Status</h3>
-<p class="red">Low</p>
+<p id="statusText"></p>
 </div>
 
 </div>
@@ -328,13 +328,63 @@ grid-template-columns:1fr;
 
 <script>
 
-// simple dynamic alert logic
-const attendance = 60;
+// ✅ GET STUDENT
+const student = JSON.parse(localStorage.getItem("student"));
 
-if(attendance >= 75){
-document.querySelector(".alert").style.display = "none";
+if (!student) {
+  window.location.href = "login_signup/student-login.html";
 }
 
+const student_id = student.id;
+
+
+// ✅ SHOW BASIC INFO
+document.getElementById("welcomeText").innerText =
+  "Welcome back, " + student.name + "!";
+
+document.getElementById("normaltext").innerText = student.name;
+document.getElementById("normemail").innerText = student.email;
+
+
+// ✅ LOGOUT
+document.querySelector(".logout").addEventListener("click", () => {
+  localStorage.removeItem("student");
+  window.location.href = "index.html";
+});
+
+
+// ✅ FETCH ATTENDANCE REPORT
+fetch(`http://localhost:3000/attendance/report/${student_id}`)
+.then(res => res.json())
+.then(data => {
+
+  const overall = data.overall;
+
+  const overallEl = document.getElementById("overallAttendance");
+  const statusEl = document.getElementById("statusText");
+  const alertBox = document.querySelector(".alert");
+
+  overallEl.innerText = overall + "%";
+
+  if (overall >= 75) {
+    overallEl.classList.add("green");
+    statusEl.innerText = "Good";
+    statusEl.classList.add("green");
+
+    // hide alert
+    if(alertBox) alertBox.style.display = "none";
+
+  } else {
+    overallEl.classList.add("red");
+    statusEl.innerText = "Low";
+    statusEl.classList.add("red");
+
+    // show alert
+    if(alertBox) alertBox.style.display = "block";
+  }
+
+});
+alertBox.innerText = `⚠ Attendance is ${overall}% (below 75%)`;
 </script>
 
 </body>

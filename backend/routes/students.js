@@ -28,4 +28,26 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+// LOGIN API
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  db.query(
+    "SELECT * FROM students WHERE email=? AND password=?",
+    [email, password],
+    (err, result) => {
+      if (err) return res.send(err);
+
+      if (result.length > 0) {
+        res.json({
+          success: true,
+          student: result[0]
+        });
+      } else {
+        res.json({ success: false });
+      }
+    }
+  );
+});
+
 module.exports = router;

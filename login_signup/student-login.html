@@ -82,16 +82,37 @@ input{
 <div class="card">
 
 <label>Email Address</label>
-<input type="email" placeholder="student@college.edu">
+<input type="email" id="email" placeholder="student@college.edu">
+<input type="password" id="password" placeholder="******">
 
-<label>Password</label>
-<input type="password" placeholder="******">
-
-<a href="../student-dashboard.html" class="btn admin">login</a>
+<button class="btn admin" onclick="login()">Login</button>
 
 </div>
 
 </div>
+<script>
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  fetch("http://localhost:3000/students/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem("student", JSON.stringify(data.student));
+      window.location.href = "../student-dashboard.html";
+    } else {
+      alert("Invalid credentials");
+    }
+  });
+}
+</script>
 
 </body>
 </html>

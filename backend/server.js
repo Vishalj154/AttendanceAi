@@ -8,9 +8,12 @@ app.use(express.json());
 
 const teacherRoutes = require("./routes/teachers");
 const studentRoutes = require("./routes/students");  // 👈 ADD THIS
+const attendanceRoutes = require("./routes/attendance");
 
 app.use("/teachers", teacherRoutes);
-app.use("/students", studentRoutes);                 // 👈 ADD THIS
+app.use("/students", studentRoutes);    
+app.use("/attendance", attendanceRoutes);             // 👈 ADD THIS
+
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

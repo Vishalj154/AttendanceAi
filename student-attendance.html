@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Monthly Attendance</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f7fb;
+  padding:20px;
+}
+
+.table-container{
+  overflow-x:auto;
+}
+
+table{
+  border-collapse:collapse;
+  background:white;
+  min-width:1200px;
+}
+
+th, td{
+  border:1px solid #ddd;
+  padding:8px;
+  text-align:center;
+}
+
+th{
+  background:#1f6bff;
+  color:white;
+}
+
+.subject{
+  font-weight:bold;
+  background:#f0f4ff;
+}
+
+input[type="checkbox"]{
+  transform:scale(1.2);
+}
+
+.disabled{
+  opacity:0.3;
+}
+
+.today{
+  background:#e6edff;
+}
+
+button{
+  margin-top:20px;
+  padding:10px 15px;
+  background:#1f6bff;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>April 2026 Attendance</h2>
+
+<div class="table-container">
+<table>
+<thead>
+<tr id="headerRow">
+  <th>Subject</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<button onclick="submitAttendance()">Save Attendance</button>
+
+<script>
+
+// subjects + labs
+const subjects = ["OS", "CN", "AOA", "IOT", "Python"];
+const labs = ["OS Lab", "CN Lab", "AOA Lab", "Python Lab"];
+const allSubjects = [...subjects, ...labs];
+
+const todayDate = new Date().getDate();
+const days = 30;
+
+let attendance = {};
+let todaySchedule = [];
+
+// ✅ get student
+const student = JSON.parse(localStorage.getItem("student"));
+const student_id = student?.id;
+
+// create header
+const headerRow = document.getElementById("headerRow");
+
+for(let d=1; d<=days; d++){
+  const th = document.createElement("th");
+  th.innerText = d;
+
+  if(d === todayDate) th.classList.add("today");
+
+  headerRow.appendChild(th);
+}
+
+// ✅ FETCH TODAY + BUILD TABLE
+fetch("http://localhost:3000/attendance/today")
+.then(res => res.json())
+.then(data => {
+  todaySchedule = data.schedule;
+  createTable();
+  loadAttendanceFromDB(); // ✅ IMPORTANT
+});
+
+
+// create table
+function createTable(){
+
+  const tbody = document.getElementById("tableBody");
+
+  allSubjects.forEach(sub => {
+
+    attendance[sub] = {};
+
+    const row = document.createElement("tr");
+
+    let html = `<td class="subject">${sub}</td>`;
+
+    for(let d=1; d<=days; d++){
+
+      let disabled = true;
+
+      if(d === todayDate && todaySchedule.includes(sub)){
+        disabled = false;
+      }
+
+      html += `
+        <td class="${d === todayDate ? 'today' : ''}">
+          <input type="checkbox"
+            ${disabled ? "disabled" : ""}
+            onchange="mark('${sub}', ${d}, this)">
+        </td>
+      `;
+    }
+
+    row.innerHTML = html;
+    tbody.appendChild(row);
+  });
+}
+
+
+// mark
+function mark(subject, day, checkbox){
+  if(day !== todayDate){
+  alert("You can only mark today's attendance");
+  checkbox.checked = false;
+  return;
+}
+  attendance[subject][day] = checkbox.checked ? 1 : 0;
+
+}
+
+
+// ✅ LOAD FROM DB
+function loadAttendanceFromDB(){
+
+  fetch(`http://localhost:3000/attendance/${student_id}`)
+  .then(res => res.json())
+  .then(data => {
+
+    data.forEach(record => {
+
+      const day = new Date(record.date).getDate();
+      const subject = record.subject;
+      const status = record.status;
+
+      const checkboxes = document.querySelectorAll("input");
+
+      checkboxes.forEach(cb => {
+        if(cb.getAttribute("onchange")?.includes(`${subject}', ${day}`)){
+          if(status === 1){
+            cb.checked = true;
+          }
+        }
+      });
+
+    });
+
+  });
+}
+
+
+// ✅ SAVE
+function submitAttendance(){
+
+  // 🔥 ensure all today's subjects are saved
+  todaySchedule.forEach(sub => {
+
+    if(!attendance[sub]){
+      attendance[sub] = {};
+    }
+
+    // if not marked → mark absent
+    if(attendance[sub][todayDate] === undefined){
+      attendance[sub][todayDate] = 0;
+    }
+  });
+
+  fetch("http://localhost:3000/attendance/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      student_id: student_id,
+      attendance: attendance
+    })
+  })
+  .then(res => res.text())
+  .then(() => {
+    alert("Attendance Saved ✅");
+  });
+}
+</script>
+
+</body>
+</html>
