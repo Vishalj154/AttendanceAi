@@ -59,7 +59,7 @@
     <input id="year" placeholder="Year">
     <input id="roll" placeholder="Roll Number">
 
-    <button type="button" onclick="saveStudent()">Save</button>
+    <button onclick="saveStudent()">Save</button>
 
 </div>
 
@@ -83,23 +83,11 @@ function saveStudent() {
         },
         body: JSON.stringify(student)
     })
-    .then(res => res.text())
     .then(() => {
-        alert("Student Added Successfully!");
-
-        // clear form
-        document.getElementById("name").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("password").value = "";
-        document.getElementById("department").value = "";
-        document.getElementById("year").value = "";
-        document.getElementById("roll").value = "";
-
-        // redirect
+        alert("Student Added!");
         window.location.href = "admin-dashboard.html";
     })
-    .catch(err => {
-        console.error(err);
+    .catch(() => {
         alert("Error adding student");
     });
 }
