@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Teacher Classes</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        body {
+            display: flex;
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #fff;
+            height: 100vh;
+            padding: 20px;
+            border-right: 1px solid #eee;
+            position: fixed;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .sidebar ul li:hover {
+            background: #f0f4ff;
+        }
+
+        .active {
+            background: #e6edff;
+            color: #1f6bff;
+            font-weight: bold;
+        }
+
+        .main {
+            margin-left: 240px;
+            width: 100%;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn {
+            background: #1f6bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .classes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .class-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .class-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .class-card p {
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .actions {
+            margin-top: 15px;
+        }
+
+        .actions button {
+            margin-right: 10px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .view {
+            background: #e6edff;
+            color: #1f6bff;
+        }
+
+        .start {
+            background: #1f6bff;
+            color: white;
+        }
+
+        .logout {
+            margin-top: 20px;
+            padding: 10px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Smart Attendance</h2>
+        <p>Teacher</p>
+
+        <ul>
+            <li onclick="location.href='dashboard.html'">Overview</li>
+            <li class="active">Classes</li>
+            <li>Start Attendance</li>
+            <li>Reports</li>
+        </ul>
+
+        <p id="teacherName"></p>
+        <p id="teacherEmail"></p>
+
+        <button class="logout">Logout</button>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="topbar">
+            <h1>Your Classes</h1>
+            <button class="btn" onclick="addClass()">+ Add Class</button>
+        </div>
+
+        <div class="container">
+            <div class="classes" id="classesContainer"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem("loggedTeacher"));
+
+        if (!user) {
+            window.location.href = "login_signup/teacher-login.html";
+        }
+
+        document.getElementById("teacherName").innerText = user.name;
+        document.getElementById("teacherEmail").innerText = user.email;
+
+        document.querySelector(".logout").addEventListener("click", () => {
+            localStorage.removeItem("loggedTeacher");
+            window.location.href = "login_signup/teacher-login.html";
+        });
+
+        const container = document.getElementById("classesContainer");
+
+        // ✅ Fetch classes from backend
+        fetch(`http://localhost:3000/classes?teacher_id=${user.id}`)
+    .then(res => res.json())
+    .then(classes => {
+
+        container.innerHTML = "";
+
+        classes.forEach(c => {
+            const div = document.createElement("div");
+            div.className = "class-card";
+
+            div.innerHTML = `
+                <h3>${c.subject}</h3>
+                <p><b>Students:</b> ${c.total_students}</p>
+                <p><b>Schedule:</b> ${c.schedule}</p>
+
+                <div class="actions">
+                    <button onclick="viewStudents(${c.id})">View</button>
+                    <button onclick="startAttendance(${c.id})">Start</button>
+                </div>
+            `;
+
+            container.appendChild(div);
+        });
+
+    })
+    .catch(err => console.error(err));
+
+        function viewStudents(classId) {
+            localStorage.setItem("classId", classId);
+            window.location.href = "students.html";
+        }
+
+        function startAttendance(classId) {
+            localStorage.setItem("classId", classId);
+            window.location.href = "attendance.html";
+        }
+
+        function addClass() {
+            alert("Add class feature coming next 🚀");
+        }
+    </script>
+
+</body>
+
+</html>

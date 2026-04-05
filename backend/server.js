@@ -11,7 +11,8 @@ app.use(express.static(path.join(__dirname, '..')));
 const teacherRoutes = require("./routes/teachers");
 const studentRoutes = require("./routes/students");  // 👈 ADD THIS
 const attendanceRoutes = require("./routes/attendance");
-
+const classesRoutes = require("./routes/classes");
+app.use("/classes", classesRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/students", studentRoutes);    
 app.use("/attendance", attendanceRoutes);             // 👈 ADD THIS

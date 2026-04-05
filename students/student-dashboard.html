@@ -332,7 +332,7 @@ grid-template-columns:1fr;
 const student = JSON.parse(localStorage.getItem("student"));
 
 if (!student) {
-  window.location.href = "login_signup/student-login.html";
+  window.location.href = "../login_signup/student-login.html";
 }
 
 const student_id = student.id;
@@ -349,7 +349,7 @@ document.getElementById("normemail").innerText = student.email;
 // ✅ LOGOUT
 document.querySelector(".logout").addEventListener("click", () => {
   localStorage.removeItem("student");
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 });
 
 
@@ -380,11 +380,13 @@ fetch(`http://localhost:3000/attendance/report/${student_id}`)
     statusEl.classList.add("red");
 
     // show alert
-    if(alertBox) alertBox.style.display = "block";
+    if(alertBox) {
+      alertBox.style.display = "block";
+      alertBox.innerText = `⚠ Attendance is ${overall}% (below 75%)`;
+    }
   }
 
 });
-alertBox.innerText = `⚠ Attendance is ${overall}% (below 75%)`;
 </script>
 
 </body>

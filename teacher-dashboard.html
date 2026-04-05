@@ -5,7 +5,7 @@
     <title>Teacher Dashboard</title>
 
     <style>
-        /* RESET */
+
         * {
             margin: 0;
             padding: 0;
@@ -18,8 +18,6 @@
             background: #f5f7fb;
         }
 
-        /* SIDEBAR */
-
         .sidebar {
             width: 240px;
             background: #fff;
@@ -29,15 +27,6 @@
             position: fixed;
         }
 
-        .sidebar h2 {
-            margin-bottom: 20px;
-        }
-
-        .sidebar p {
-            color: #777;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
 
         .sidebar ul {
             list-style: none;
@@ -60,26 +49,17 @@
             font-weight: bold;
         }
 
-        /* MAIN */
-
         .main {
             margin-left: 240px;
             width: 100%;
         }
 
-        /* TOPBAR */
-
         .topbar {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             padding: 20px;
             background: white;
             border-bottom: 1px solid #eee;
-        }
-
-        .topbar h1 {
-            font-size: 22px;
         }
 
         .btn {
@@ -90,8 +70,6 @@
             border-radius: 6px;
             cursor: pointer;
         }
-
-        /* DASHBOARD */
 
         .container {
             padding: 30px;
@@ -111,19 +89,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .card h3 {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .card p {
-            font-size: 26px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        /* CLASS BOX */
-
         .class-box {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -138,16 +103,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .green {
-            color: green;
-        }
-
-        .red {
-            color: red;
-        }
-
-        /* STUDENTS */
-
         .students {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -158,30 +113,26 @@
             background: white;
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             display: flex;
-            align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
         }
 
         .student-info {
             display: flex;
-            align-items: center;
             gap: 10px;
         }
 
         .student-info img {
             width: 50px;
-            height: 50px;
             border-radius: 50%;
         }
 
         .actions button {
             margin: 5px;
             padding: 6px 12px;
-            border: none;
             border-radius: 6px;
+            border: none;
             cursor: pointer;
         }
 
@@ -194,42 +145,7 @@
             background: #ffd6d6;
             color: red;
         }
-
-        /* RESPONSIVE */
-
-        @media(max-width:1000px) {
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .students {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media(max-width:700px) {
-            .sidebar {
-                display: none;
-            }
-
-            .main {
-                margin-left: 0;
-            }
-
-            .cards {
-                grid-template-columns: 1fr;
-            }
-
-            .class-box {
-                grid-template-columns: 1fr;
-            }
-
-            .students {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
-
 </head>
 
 <body>
@@ -248,121 +164,109 @@
 
         <br><br>
 
-        <p><b>Dr. Rakesh Sharma</b><br>teacher@mail.com</p>
-        <button class="btn">Logout</button>
+        <p id="normaltext"></p>
+        <p id="normalemail"></p>
 
+        <button class="logout">Logout</button>
     </div>
 
     <!-- MAIN -->
     <div class="main">
 
-        <!-- TOPBAR -->
         <div class="topbar">
             <h1>Dashboard</h1>
-            <button class="btn">Start Attendance Session</button>
         </div>
 
         <div class="container">
 
-            <h2>Teacher Dashboard</h2>
-            <p>Welcome back, Dr. Rakesh Sharma!</p>
-
+            <h2 id="name"></h2>
             <br>
 
-            <!-- CARDS -->
             <div class="cards">
-
                 <div class="card">
                     <h3>Subject</h3>
-                    <p>Data Structures</p>
+                    <p id="subject"></p>
                 </div>
 
                 <div class="card">
                     <h3>Total Students</h3>
-                    <p>8</p>
+                    <p id="studentsCount"></p>
                 </div>
 
                 <div class="card">
-                    <h3>Attendance</h3>
-                    <p class="green">37.5%</p>
-                </div>
-
-                <div class="card">
-                    <h3>Sessions</h3>
-                    <p>12</p>
-                </div>
-
-            </div>
-
-            <!-- CLASS STATS -->
-            <div class="class-box">
-
-                <div class="class-card">
-                    <h3>Total Students</h3>
-                    <p>8</p>
-                </div>
-
-                <div class="class-card">
                     <h3>Present Today</h3>
-                    <p class="green">3</p>
+                    <p id="presentCount"></p>
                 </div>
 
-                <div class="class-card">
+                <div class="card">
                     <h3>Absent Today</h3>
-                    <p class="red">7</p>
+                    <p id="absentCount"></p>
                 </div>
-
             </div>
 
-            <h3>Student List</h3>
+            <h3>Student List</h3><br>
 
-            <br>
-
-            <!-- STUDENTS -->
             <div class="students" id="students"></div>
+
 
         </div>
 
     </div>
 
     <script>
-        let user = JSON.parse(localStorage.getItem("loggedTeacher"));
-document.body.innerHTML += `<h3>Welcome ${user.name}</h3>`;
+        const user = JSON.parse(localStorage.getItem("loggedTeacher"));
 
-        const students = [
-            { name: "Aarav Sharma", id: "CSE001" },
-            { name: "Priya Patel", id: "CSE002" },
-            { name: "Rajesh Kumar", id: "CSE003" },
-            { name: "Neha Singh", id: "CSE004" },
-            { name: "Ankit Verma", id: "CSE005" },
-            { name: "Deepika Gupta", id: "CSE006" },
-            { name: "Harsh Pant", id: "CSE007" },
-            { name: "Swati Joshi", id: "CSE008" }
-        ];
+        if (!user) {
+            window.location.href = "login_signup/teacher-login.html";
+        }
+
+        // user info
+        document.getElementById("normaltext").innerText = user.name;
+        document.getElementById("normalemail").innerText = user.email;
+        document.getElementById("name").innerText = "Welcome back, " + user.name;
+        document.getElementById("subject").innerText = user.subject;
+
+        // logout
+        document.querySelector(".logout").addEventListener("click", () => {
+            localStorage.removeItem("loggedTeacher");
+            window.location.href = "login_signup/teacher-login.html";
+        });
 
         const container = document.getElementById("students");
 
-        students.forEach(s => {
-            const div = document.createElement("div");
-            div.className = "student-card";
+        let present = 0;
+        let absent = 0;
 
-            div.innerHTML = `
-<div class="student-info">
-<img src="https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}">
-<div>
-<b>${s.name}</b><br>
-<small>${s.id}</small>
-</div>
-</div>
+        fetch(`http://localhost:3000/students?teacher_id=${user.id}`)
+            .then(res => res.json())
+            .then(students => {
 
-<div class="actions">
-<button class="present" onclick="mark(this,'present')">Present</button>
-<button class="absent" onclick="mark(this,'absent')">Absent</button>
-</div>
-`;
+                container.innerHTML = "";
 
-            container.appendChild(div);
-        });
+                document.getElementById("studentsCount").innerText = students.length;
+
+                students.forEach(s => {
+                    const div = document.createElement("div");
+                    div.className = "student-card";
+
+                    div.innerHTML = `
+                        <div class="student-info">
+                            
+                            <div>
+                                <b>${s.name}</b><br>
+                                <small>${s.roll_no}</small>
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button class="present" onclick="mark(this,'present')">Present</button>
+                            <button class="absent" onclick="mark(this,'absent')">Absent</button>
+                        </div>
+                    `;
+
+                    container.appendChild(div);
+                });
+            });
 
         function mark(btn, type) {
             const parent = btn.parentElement;
@@ -370,14 +274,23 @@ document.body.innerHTML += `<h3>Welcome ${user.name}</h3>`;
             if (type === "present") {
                 parent.querySelector(".present").style.background = "green";
                 parent.querySelector(".present").style.color = "white";
+
                 parent.querySelector(".absent").style.background = "#ffd6d6";
                 parent.querySelector(".absent").style.color = "red";
+
+                present++;
             } else {
                 parent.querySelector(".absent").style.background = "red";
                 parent.querySelector(".absent").style.color = "white";
+
                 parent.querySelector(".present").style.background = "#d4f8e8";
                 parent.querySelector(".present").style.color = "green";
+
+                absent++;
             }
+
+            document.getElementById("presentCount").innerText = present;
+            document.getElementById("absentCount").innerText = absent;
         }
 
     </script>
